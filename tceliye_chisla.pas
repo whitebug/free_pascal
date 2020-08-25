@@ -9,6 +9,7 @@ var
 	number: integer;
 	stackBegin: stackPtr;
 	stackDispose: stackPtr;
+	stackNew: stackPtr;
 	stack1: stackPtr;
 	stack2: stackPtr;
 begin
@@ -38,21 +39,29 @@ begin
 	stack1^.next := nil;
 	stack1 := stackBegin;
 	new(stack2);
+	{we start stack2 with nil}
 	stack2^.next := nil;
 	stack2^.data := stack1^.data;
+	new(stackNew);
+	stackNew^.next := stack2;
+	stack2 := stackNew;
 	while stack1^.next <> nil do
 	begin
-		writeln('first stack ', stack1^.data);
-		new(stack2^.next);
-		stack2^.next^.data := stack1^.data;
+		stack2^.data := stack1^.data;
 		stackDispose := stack1;
 		stack1 := stack1^.next;
-	        stack2^.next := stack2;
 		dispose(stackDispose);
+		new(stackNew);
+		stackNew^.next := stack2;
+		stack2 := stackNew
 	end;
+	stack2 := stack2^.next;
 	while stack2^.next <> nil do
 	begin
-		writeln('second stack ', stack2^.data);
+		if stack2^.next^.next <> nil then
+			write(stack2^.data, ' ')
+		else
+			writeln(stack2^.data);
 		stackDispose := stack2;
 		stack2 := stack2^.next;
 		dispose(stackDispose)
