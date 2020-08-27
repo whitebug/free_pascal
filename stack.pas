@@ -12,7 +12,6 @@ var
 	stackNext: stackPtr;
 begin
 	writeln('please enter a number');
-	new(stackIn);
 	stackIn := nil;
 	while not SeekEof do
 	begin
@@ -28,11 +27,11 @@ var
 	stackA, stackDel: stackPtr;
 begin
 	userInput(stackA);
-	while stackA^.next <> nil do
+	while stackA <> nil do
 	begin
 		writeln(stackA^.data);
 		stackDel := stackA;
 		stackA := stackA^.next;
-		dispose(stackDel)
+		dispose(stackDel);
 	end
 end.
