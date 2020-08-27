@@ -13,7 +13,7 @@ var
 begin
 	writeln('please enter a number');
 	new(stackIn);
-	stackIn^.next := nil;
+	stackIn := nil;
 	while not SeekEof do
 	begin
 		writeln('please enter a number');
