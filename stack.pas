@@ -25,12 +25,14 @@ begin
 	end;
 end;
 var
-	stackA: stackPtr;
+	stackA, stackDel: stackPtr;
 begin
 	userInput(stackA);
 	while stackA^.next <> nil do
 	begin
 		writeln(stackA^.data);
+		stackDel := stackA;
 		stackA := stackA^.next;
-	end;
+		dispose(stackDel)
+	end
 end.
