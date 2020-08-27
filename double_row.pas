@@ -7,9 +7,29 @@ type
 	end;
 const
 	repeatNumber = 2;
+
+procedure printDoubles(var first, second, beginning: doublePtr; max: integer);
+var
+	currentRepeat: integer;
+begin
+	first := beginning;
+	currentRepeat := 0;
+       	while currentRepeat < max do
+	begin
+		while first^.next <> nil do
+		begin
+			writeln(first^.data);
+			second := first;
+			first := first^.next;
+			if currentRepeat = 1 then
+				dispose(second)
+		end;
+		currentRepeat := currentRepeat + 1;
+		first := beginning
+	end;
+end;
 var
 	number: integer;
-	currentRepeat: integer;
 	double1: doublePtr;
 	double1Start: doublePtr;
 	double2: doublePtr;
@@ -31,20 +51,6 @@ begin
 		new(double1^.next);
 		double1 := double1^.next
 	end;
-	double1 := double1Start;
-	currentRepeat := 0;
-       	while currentRepeat < repeatNumber do
-	begin
-		while double1^.next <> nil do
-		begin
-			writeln(double1^.data);
-			double2 := double1;
-			double1 := double1^.next;
-			if currentRepeat = 1 then
-				dispose(double2)
-		end;
-		currentRepeat := currentRepeat + 1;
-		double1 := double1Start
-	end;
+	printDoubles(double1, double2, double1Start, repeatNumber)
 end.
 
