@@ -32,6 +32,7 @@ end;
 
 function Euclidian(first, second: integer): integer;
 begin
+	WhichBigger(first, second);
 	while (first <> 0) and (second <> 0) do
 	begin
 		if first > second then
@@ -58,7 +59,6 @@ begin
 	{$IFDEF DEBUG}
 	writeln('f ', first, ' s ', second, ' mf ', minf, ' ms ', mins);
 	{$ENDIF}
-	WhichBigger(first, second);
 	divider := Euclidian(first, second);
 	firstAns := first div divider;
 	secondAns := second div divider;
@@ -66,6 +66,5 @@ begin
 		firstAns := firstAns * (-1);
 	if mins then
 		secondAns := secondAns * (-1);
-	writeln(firstAns);
-	writeln(secondAns);
+	writeln(firstAns, ' ', secondAns);
 end.
