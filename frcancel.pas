@@ -1,79 +1,71 @@
 program FrCancel;
 
-procedure CompareNumbers(var ina, inb: integer);
-var temp: integer;
+procedure MinusMod(var first, second: integer; var minf, mins: boolean);
 begin
-	{$IFDEF DEBUG}
-	writeln('DEBUG: CompareNumbers: ina = ', ina, ' inb = ', inb);
-	{$ENDIF}
-	if ina < inb then
+	if first < 0 then
 	begin
-		temp := ina;
-		{$IFDEF DEBUG}
-		writeln('DEBUG: CompareNumbers: temp = ', temp);
-		{$ENDIF}
-		ina := inb;
-		inb := temp;
+		first := first * (-1);
+		minf := true
 	end;
-	{$IFDEF DEBUG}
-	writeln('DEBUG: CompareNumbers: End of procedure');
-	{$ENDIF}
 
+	if second < 0 then
+	begin
+		second := second * (-1);
+		mins := true;
+	end
 end;
 
-function Denominator(ina, inb: integer): integer;
+procedure WhichBigger(var first, second: integer);
 var
 	temp: integer;
-	legal: boolean;
 begin
-	{$IFDEF DEBUG}
-	writeln('DEBUG: Denominator: ina = ', ina, ' inb = ', inb);
-	{$ENDIF}
-	if inb <> 0 then
-		temp := ina div inb;
-	{$IFDEF DEBUG}
-	writeln('DEBUG: Denominator: temp = ', temp);
-	{$ENDIF}
-
-	legal := true;
-	while legal do
+	if first > second then
 	begin
-		ina := inb;
-		inb := temp;
-		if inb > 0 then
-			temp := ina div inb
-		else
-			legal := false;
-
-		{$IFDEF DEBUG}
-		writeln('DEBUG: Denominator: temp = ', temp);
-		{$ENDIF}
+		temp := first;
+		first := second;
+		second := temp;
 	end;
 	{$IFDEF DEBUG}
-	writeln('DEBUG: Denominator: result = ', inb);
+	writeln('WhichBigger: first = ', first, ' second = ', second);
 	{$ENDIF}
+end;
 
-	Denominator := inb;
+function Euclidian(first, second: integer): integer;
+begin
+	while (first <> 0) and (second <> 0) do
+	begin
+		if first > second then
+			first := first - second
+		else
+			second := second - first
+	end;
+	if first > second then
+		Euclidian := first
+	else
+		Euclidian := second
 end;
 
 var
-	ina, inb, over: integer;
+	first, second, divider, firstAns, secondAns: integer;
+	minf, mins: boolean;
 begin
-	{$I-}
-	read(ina);
-	if IOResult <> 0 then
-	begin
-		writeln('please enter a number');
-		halt(1)
-	end;
-	read(inb);
-	if IOResult <> 0 then
-	begin
-		writeln('please enter a number');
-		halt(1)
-	end;
-	CompareNumbers(ina, inb);
-	over := Denominator(ina, inb);
-	writeln((ina / over), ' ', (inb / over));
+	read(first);
+	read(second);
+	{$IFDEF DEBUG}
+	writeln('start processing');
+	{$ENDIF}	
+	MinusMod(first, second, minf, mins);
+	{$IFDEF DEBUG}
+	writeln('f ', first, ' s ', second, ' mf ', minf, ' ms ', mins);
+	{$ENDIF}
+	WhichBigger(first, second);
+	divider := Euclidian(first, second);
+	firstAns := first div divider;
+	secondAns := second div divider;
+	if minf then
+		firstAns := firstAns * (-1);
+	if mins then
+		secondAns := secondAns * (-1);
+	writeln(firstAns);
+	writeln(secondAns);
 end.
-
